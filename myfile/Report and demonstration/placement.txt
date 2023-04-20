@@ -1,0 +1,119 @@
+1  INTRODUCTION:
+    1)This paper focuses on the trend analysis of University placement.
+    2)A machine learning plays the most important role to find out the performance define the trend or predict the placement for the upcoming year.
+     3)A University placement plays a very important role to get more admission and maintain the reputation in the world.
+1.1 OVERVIEW:
+     Campus placement holds a great importance for students and educational institutes .It helps a student in building a strong foundation for the professional career a head without facing the real world job struggle, peer-competition or family pressure a good placement record gives a competitive edge to an University.
+     Campus placements provides the students with a foot in the door opportunity, enabling them to start their career right after they have completed their course curriculum.
+1.2 PURPOSE:
+    Campus placement is a program conducted within universities or other educational institutions to provide jobs to students nearing completion of their studies.
+2 Problem definition & Design thinking
+ 2.1  Empathy map
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+2.2  Brainstroming
+
+
+3. RESULT
+
+
+
+4  ADVANTAGES:
+      Campus placements smoothen the overall process of getting that first job.
+     It looking for a job as a fresher is like going into the wilderness unprepared.
+     If you’re a student from a reputable institution.
+     You will benefit from the institutions reputation which increases your marketability to employers.
+DISADVANTAGES:
+         Fresh candidates selected through campus placements require adequate training for work.
+        The experienced and skilled candidates having practical job exposures cannot be recruited through campus placements.
+       Students can’t work with their dream company and will have to remain satisfied with the company that recruits them during campus selection.
+5   APPLICATION:
+       Application of campus placement………
+      1)Select a person on interview using in this method.
+      2)Select a merit list students using this model.
+      3)Select a person to government jobs by using this method.
+6   CONCLUSION:
+      The algorithms of machine learning we have discussed are can used to find the trend of placement, which will be helpful for University to get more admission in future.
+     We compared the algorithm and find out the accuracy by considering some of attributes of students.
+7  FUTURE SCOPE:
+       Our project mainly helps in improving productivity and makes use of utilization of resources.
+8 APPENDIX:
+ from logging import warning
+ import numpy as np
+ import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn import svm
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report,confusion_matrix,accuracy_score
+from sklearn.model_selection import cross_val_score
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+import joblib
+from sklearn.metrics import accuracy_score
+import warnings
+warnings.filterwarnings('ignore')
+df=pd.read_csv("c:/Users/ELCOT/downloads/collegePlace.csv")
+df.head()
+df.info()
+df.isnull().sum()
+def transformationplot(feature):
+    plt.figure(figsize=(12,5))
+    plt.subplot(1,2,1)
+    sns.distplot(feature)
+transformationplot(np.log(df['Age']))
+df=df.replace(['male'],[0])
+df=df.replace(['female'],[1])
+df=df.replace(['ComputerScience','Information Technology','Electronics And Communication','Mechanical','Electrical','Civil'],[0,1,2,3,4,5])
+df=df.drop(['Hostel'],axis=1)
+df
+plt.figure(figsize=(12,5))
+plt.subplot(121)
+sns.distplot(df['CGPA'],color='r')
+plt.figure(figsize=(12,5))
+plt.subplot(121)
+sns.distplot(df['PlacedOrNot'],color='r')
+plt.figure(figsize=(18,4))
+plt.subplot(1,4,1)
+sns.distplot(df['CGPA'])
+plt.subplot(1,4,2)
+sns.distplot(df['Internships'])
+plt.show()
+plt.figure(figsize=(20,5))
+plt.subplot(131)
+sns.countplot(data=df,x="PlacedOrNot",hue='CGPA')
+sns.countplot(data=df,x='PlacedOrNot',hue='Stream')
+x=df.iloc[:,[3,4]]
+y=df.iloc[:,6]
+x.head()
+y.head()
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,stratify=y,random_state=2)
+classifier=svm.SVC()
+classifier.fit(x_train,y_train)
+x_train_predict=classifier.predict(x_train)
+training_data_accuracy=accuracy_score(x_train_predict,y_train)
+print('Accuracy score of the training data:',training_data_accuracy)
+print(confusion_matrix(x_train_predict,y_train))
+print(classification_report(y_train,x_train_predict))
+import pickle
+filename = 'placement1.pkl'
+pickle.dump(classifier, open(filename, 'wb'))
+pickle.dump(classifier,open("placement.pkl",'wb'))
+model=pickle.load(open('placement.pkl','rb'))                            

@@ -1,0 +1,2 @@
+video link:https://youtu.be/-ICaTRHCA4M
+REPORT:we used here svm classifier to predict placed or not value.my accuracy score is 85%.
